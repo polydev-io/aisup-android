@@ -40,10 +40,11 @@ class AISUPAPIClient(private val config: AISUPConfig) {
      * Initialize a new chat session
      */
     suspend fun initialize(): InitResponse = withContext(Dispatchers.IO) {
+        val clientChatId = chatId ?: java.util.UUID.randomUUID().toString()
         val body = buildString {
             append("{")
-            append("\"userName\":\"${config.userName}\"")
-            chatId?.let { append(",\"chatId\":\"$it\"") }
+            append("\"chatId\":\"$clientChatId\",")
+            append("\"chatNickname\":\"${config.userName}\"")
             append("}")
         }
         
@@ -79,7 +80,7 @@ class AISUPAPIClient(private val config: AISUPConfig) {
         val body = buildString {
             append("{")
             append("\"chatId\":\"$currentChatId\",")
-            append("\"content\":\"${content.replace("\"", "\\\"")}\"")
+            append("\"messageText\":\"${content.replace("\"", "\\\"")}\"")
             attachments?.let {
                 append(",\"attachments\":${json.encodeToString(it)}")
             }
@@ -113,15 +114,13 @@ class AISUPAPIClient(private val config: AISUPConfig) {
     ): MessagesResponse = withContext(Dispatchers.IO) {
         val currentChatId = chatId ?: throw AISUPException.NotInitialized()
         
-        val urlBuilder = StringBuilder("${config.apiUrl}/api/integration/messages")
-        urlBuilder.append("?chatId=$currentChatId")
-        urlBuilder.append("&limit=$limit")
-        before?.let { urlBuilder.append("&before=$it") }
+        val body = "{\"chatId\":\"$currentChatId\"}"
         
         val request = Request.Builder()
-            .url(urlBuilder.toString())
+            .url("${config.apiUrl}/api/integration/messages")
+            .addHeader("Content-Type", "application/json")
             .addHeader("X-API-Key", config.apiKey)
-            .get()
+            .post(body.toRequestBody("application/json".toMediaType()))
             .build()
         
         val response = client.newCall(request).execute()

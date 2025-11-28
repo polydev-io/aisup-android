@@ -26,7 +26,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.github.polydev-io:aisup-android:1.0.0")
+    implementation("com.github.polydev-io:aisup-android:1.0.1")
 }
 ```
 

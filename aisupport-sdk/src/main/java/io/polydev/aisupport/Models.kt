@@ -21,18 +21,32 @@ data class Message(
     @SerialName("_id") val id: String,
     val chat: String,
     val content: String,
-    val sender: MessageSender,
-    val senderName: String? = null,
-    val attachments: List<Attachment>? = null,
+    val role: MessageRole,
+    val type: MessageType = MessageType.TEXT,
+    val caption: String? = null,
     val createdAt: String,
     val updatedAt: String
-)
+) {
+    /** Convenience property for UI */
+    val sender: MessageRole get() = role
+}
 
 @Serializable
-enum class MessageSender {
+enum class MessageRole {
     @SerialName("user") USER,
     @SerialName("bot") BOT,
-    @SerialName("operator") OPERATOR
+    @SerialName("admin") ADMIN
+}
+
+@Serializable
+enum class MessageType {
+    @SerialName("text") TEXT,
+    @SerialName("photo") PHOTO,
+    @SerialName("file") FILE,
+    @SerialName("audio") AUDIO,
+    @SerialName("video") VIDEO,
+    @SerialName("video_note") VIDEO_NOTE,
+    @SerialName("voice") VOICE
 }
 
 /**
@@ -87,29 +101,50 @@ enum class ChatMode {
  */
 @Serializable
 data class InitResponse(
-    val success: Boolean,
+    val response: String,
+    val message: String,
+    val data: InitResponseData
+) {
+    val chatId: String get() = data.chatId
+    val startMessage: String get() = data.startMessage
+}
+
+@Serializable
+data class InitResponseData(
     val chatId: String,
-    val chat: Chat,
-    val welcomeMessage: String? = null
+    val startMessage: String
 )
 
 @Serializable
 data class SendMessageResponse(
-    val success: Boolean,
-    val message: Message
+    val response: String,
+    val message: String
 )
 
 @Serializable
 data class MessagesResponse(
-    val success: Boolean,
-    val messages: List<Message>,
-    val hasMore: Boolean
-)
+    val response: String,
+    val message: String,
+    val data: List<Message>
+) {
+    val messages: List<Message> get() = data
+}
 
 @Serializable
 data class UploadResponse(
-    val success: Boolean,
-    val attachment: Attachment
+    val response: String,
+    val message: String,
+    val data: UploadResponseData
+)
+
+@Serializable
+data class UploadResponseData(
+    val url: String,
+    val type: String,
+    val originalName: String,
+    val size: Long,
+    val mimetype: String,
+    val messageId: String
 )
 
 /**

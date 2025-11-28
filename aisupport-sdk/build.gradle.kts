@@ -51,7 +51,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.polydev"
             artifactId = "aisupport-sdk"
-            version = "1.0.0"
+            version = "1.0.1"
             
             afterEvaluate {
                 from(components["release"])
