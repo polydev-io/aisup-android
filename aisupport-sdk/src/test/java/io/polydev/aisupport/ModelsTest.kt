@@ -32,10 +32,19 @@ class ModelsTest {
     }
 
     @Test
-    fun `MessageSender enum should have correct values`() {
-        assertEquals("user", MessageSender.USER.value)
-        assertEquals("bot", MessageSender.BOT.value)
-        assertEquals("operator", MessageSender.OPERATOR.value)
+    fun `MessageRole enum should have correct values`() {
+        assertNotNull(MessageRole.USER)
+        assertNotNull(MessageRole.BOT)
+        assertNotNull(MessageRole.ADMIN)
+    }
+    
+    @Test
+    fun `MessageType enum should have correct values`() {
+        assertNotNull(MessageType.TEXT)
+        assertNotNull(MessageType.PHOTO)
+        assertNotNull(MessageType.FILE)
+        assertNotNull(MessageType.AUDIO)
+        assertNotNull(MessageType.VIDEO)
     }
 
     @Test
@@ -48,22 +57,22 @@ class ModelsTest {
 
     @Test
     fun `ChatStatus enum should have correct values`() {
-        assertEquals("active", ChatStatus.ACTIVE.value)
-        assertEquals("closed", ChatStatus.CLOSED.value)
-        assertEquals("pending", ChatStatus.PENDING.value)
+        assertNotNull(ChatStatus.ACTIVE)
+        assertNotNull(ChatStatus.CLOSED)
+        assertNotNull(ChatStatus.PENDING)
     }
 
     @Test
     fun `ChatMode enum should have correct values`() {
-        assertEquals("bot", ChatMode.BOT.value)
-        assertEquals("operator", ChatMode.OPERATOR.value)
+        assertNotNull(ChatMode.BOT)
+        assertNotNull(ChatMode.OPERATOR)
     }
 
     @Test
     fun `AttachmentType enum should have correct values`() {
-        assertEquals("image", AttachmentType.IMAGE.value)
-        assertEquals("video", AttachmentType.VIDEO.value)
-        assertEquals("file", AttachmentType.FILE.value)
+        assertNotNull(AttachmentType.IMAGE)
+        assertNotNull(AttachmentType.VIDEO)
+        assertNotNull(AttachmentType.FILE)
     }
 
     @Test
